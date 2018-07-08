@@ -8,7 +8,8 @@ using namespace std;
 
 class MPC {
  public:
-  MPC();
+   double prev_a = 0; //[*]
+   MPC();
 
   virtual ~MPC();
 
