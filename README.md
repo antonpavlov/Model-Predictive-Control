@@ -7,12 +7,12 @@ The Model Predictive Control defines a task of keeping a vehicle on its trajecto
 #### The Model ####
 The model that combines the previous state and the actuators from previous timestep were used to obtain the current state as following:
 <br>
-![x_t](http://www.sciweavers.org/tex2img.php?eq=x_%7Bt%7D%20%3D%20x_%7Bt-1%7D%20%2B%20v_%7Bt-1%7D%20%2A%20cos%28%5Cpsi_%7Bt-1%7D%29%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)<br>
-![y_1](http://www.sciweavers.org/tex2img.php?eq=y_%7Bt%7D%20%3D%20y_%7Bt-1%7D%20%2B%20v_%7Bt-1%7D%20%2A%20sin%28%5Cpsi_%7Bt-1%7D%29%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)<br>
-![psi_[t]](http://www.sciweavers.org/tex2img.php?eq=%5Cpsi_%7Bt%7D%20%3D%20%5Cpsi_%7Bt-1%7D%20%2B%20%5Cfrac%7Bv_%7Bt-1%7D%7D%7BL_%7Bf%7D%7D%20%2A%20%5Cdelta_%7Bt-1%7D%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0) <br>
-![v_[t]](http://www.sciweavers.org/tex2img.php?eq=v_%7Bt%7D%20%3D%20v_%7Bt-1%7D%20%2B%20a_%7Bt-1%7D%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0) <br>
-![cte[t]](http://www.sciweavers.org/tex2img.php?eq=cte_%7Bt%7D%20%3D%20f%28x_%7Bt-1%7D%29%20-%20y_%7Bt-1%7D%20%2B%20v_%7Bt-1%7D%20%2A%20sin%28E%5Cpsi_%7Bt-1%7D%29%20%2A%20dt%20&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)<br>
-![epsi[t]](http://www.sciweavers.org/tex2img.php?eq=E%5Cpsi_%7Bt%7D%20%3D%20%5Cpsi_%7Bt%7D%20-%20%5Cpsi%20des_%7Bt-1%7D%20%2B%20v_%7Bt-1%7D%20%2A%20%5Cfrac%7B%5Cdelta_%7Bt-1%7D%7D%7BLf%7D%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)<br>
+![](http://www.sciweavers.org/tex2img.php?eq=x_%7Bt%7D%20%3D%20x_%7Bt-1%7D%20%2B%20v_%7Bt-1%7D%20%2A%20cos%28%5Cpsi_%7Bt-1%7D%29%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)<br>
+![](http://www.sciweavers.org/tex2img.php?eq=y_%7Bt%7D%20%3D%20y_%7Bt-1%7D%20%2B%20v_%7Bt-1%7D%20%2A%20sin%28%5Cpsi_%7Bt-1%7D%29%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)<br>
+![](http://www.sciweavers.org/tex2img.php?eq=%5Cpsi_%7Bt%7D%20%3D%20%5Cpsi_%7Bt-1%7D%20%2B%20%5Cfrac%7Bv_%7Bt-1%7D%7D%7BL_%7Bf%7D%7D%20%2A%20%5Cdelta_%7Bt-1%7D%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0) <br>
+![](http://www.sciweavers.org/tex2img.php?eq=v_%7Bt%7D%20%3D%20v_%7Bt-1%7D%20%2B%20a_%7Bt-1%7D%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0) <br>
+![](http://www.sciweavers.org/tex2img.php?eq=cte_%7Bt%7D%20%3D%20f%28x_%7Bt-1%7D%29%20-%20y_%7Bt-1%7D%20%2B%20v_%7Bt-1%7D%20%2A%20sin%28E%5Cpsi_%7Bt-1%7D%29%20%2A%20dt%20&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)<br>
+![](http://www.sciweavers.org/tex2img.php?eq=E%5Cpsi_%7Bt%7D%20%3D%20%5Cpsi_%7Bt%7D%20-%20%5Cpsi%20des_%7Bt-1%7D%20%2B%20v_%7Bt-1%7D%20%2A%20%5Cfrac%7B%5Cdelta_%7Bt-1%7D%7D%7BLf%7D%20%2A%20dt&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)<br>
 , where x and y are vehicle's coordinates, psi is an orientation angle, v is a velocity, cte is a  cross-track error and epsi is a psi error. Actuator outputs are described by a - an acceleration and a steering angle - delta.
 
 The cost error between a prediction and a measurement was minimized by solving third degree polynomial with Integer Linear Programming solver from Ipopt/CppAD packages.
