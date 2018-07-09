@@ -109,7 +109,7 @@ int main() {
           Eigen::VectorXd ptsyvec = Eigen::VectorXd::Map(ptsy.data(), ptsy.size());
 
           // Fit polynomial to x and y coordinates
-          auto coeffs = polyfit(ptsxvec, ptsyvec, 3
+          auto coeffs = polyfit(ptsxvec, ptsyvec, 3);
 
           // Estimate cross-track error
           const double cte = polyeval(coeffs, 0);
