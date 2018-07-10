@@ -19,13 +19,37 @@ epsi[t]  = psi[t] - psides[t-1] - v[t-1] * delta[t-1] / Lf * dt
 The cost error between a prediction and a measurement was minimized by solving third degree polynomial with Integer Linear Programming solver from Ipopt/CppAD packages.
 
 #### Timestep Length and Elapsed Duration ####
-Following Udacity's suggestion and trial-and-error appetites, 15 was chosen for the `N` and 0.1 for the `dt`.
+From the theory point of view, the Model Predictive Control optimizes control inputs `[delta, a][delta, a][delta, a]` until a low cost vector of control inputs is obtained. This vector resumes to the following: `[delta(1)​, a(1)​, delta(2​), a(2​),..., delta(N−1​), a(N−1)​]`. Thus, it is clear that `N` has a direct relation to computational cost of that optimization process.
+
+The `MPC.cpp` is set in the following way:
+* N = 15
+* dt = 0.1
+
+Both of these values form a 1.5 seconds horizon, that equals to 66 feet (or 20 meters) for a speed of 30 mph (or 48 kmph).
+
+Setting up `N = 10`/`dt = 0.1` would also be a good option to start a search for a best fit. However, larger values of `dt` may lead to the "discretization error" where actuations are less frequent. It makes of an accurate approximation of a continuous reference trajectory, a very difficult task.
 
 #### Polynomial Fitting and MPC Preprocessing ####
 Again, following Udacity's suggestion, the waypoints were transformed to vehicle's perspective. It simplifies the process to fit a third degree polynomial considerably.
 
 #### Model Predictive Control with Latency ####
-The latency handling was implemented in `main.cpp` file; details can be found here, from [line 127](https://github.com/antonpavlov/Model-Predictive-Control/blob/344ee915e0d5b8a750e7b645e295af66c156accf/src/main.cpp#L127) through [line 138](https://github.com/antonpavlov/Model-Predictive-Control/blob/344ee915e0d5b8a750e7b645e295af66c156accf/src/main.cpp#L138).
+The PID controller obtains the error in a present state, but the actuation will be applied in a future. One of the main reasons of the latency is a lack of predictability of actuator dynamics. This fact may cause an instability of the systems, especially those without an accurate vehicle model.
+
+In this particular case, the Model Predictive Control includes a latency into account by adding it to a state vector, as shown in the implementation below (Please, see the `main.cpp` file, from [line 127](https://github.com/antonpavlov/Model-Predictive-Control/blob/344ee915e0d5b8a750e7b645e295af66c156accf/src/main.cpp#L127) through [line 138](https://github.com/antonpavlov/Model-Predictive-Control/blob/344ee915e0d5b8a750e7b645e295af66c156accf/src/main.cpp#L138)):
+```
+// Latency 100ms
+const double dt = 0.1;
+// Previous steering angle and throttle
+const double delta = j[1]["steering_angle"];
+const double prev_a = mpc.prev_a;
+const double predicted_x = v * dt;
+const double predicted_y = 0;
+const double predicted_psi = - v * delta / Lf * dt;
+const double predicted_v = v + prev_a * dt;
+const double predicted_cte = cte + v * CppAD::sin(epsi) * dt;
+const double predicted_epsi = epsi + predicted_psi;
+state << predicted_x, predicted_y, predicted_psi, predicted_v, predicted_cte, predicted_epsi;
+```
 
 ## Requirements ##
 In order to successfully build and run the program, the following requirements should be fulfilled:
